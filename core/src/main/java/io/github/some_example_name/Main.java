@@ -27,10 +27,10 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         sr = new ShapeRenderer();
-        planet1 = new Planets(400, 500, -3, 0, 1, 0, 0);
-        planet2 = new Planets(1000, 500, -3, 0, 0, 1, 0);
-        planet3 = new Planets(1600, 500, -3, 0, 0, 0, 1);
-        planet4 = new Planets(2200,500, -3, 0, 0, 0.5f, 0.5f);
+        planet1 = new Planets(400, 500, -2, 0, 1, 0, 0);
+        planet2 = new Planets(1000, 500, -2, 0, 0, 1, 0);
+        planet3 = new Planets(1600, 500, -2, 0, 0, 0, 1);
+        planet4 = new Planets(2200,500, -2, 0, 0, 0.5f, 0.5f);
 
         player = new Player(1000, 900);
 

@@ -7,11 +7,13 @@ public class Player {
     Vector2 location;
     Vector2 velocity;
     Planets currentPlanet;
-    float gravityStrength = 10.0f;
+    float gravityStrength = 0.5f;
     float playerRadius = 15;
     float movementSpeed = 3f;
     float jumpStrength = 10f;
     boolean grounded = false;
+    int jumpCount = 0;
+    boolean escaping = false;
 
 
     public Player(int xpos, int ypos) {
@@ -32,11 +34,11 @@ public class Player {
             location.set(currentPlanet.location.x + directionFromPlanet.x * minimumDistance, currentPlanet.location.y + directionFromPlanet.y * minimumDistance);
             velocity.set(0,0);
             grounded = true;
+            jumpCount = 0;
         }
         else{
             grounded = false;
         }
-
     }
 
     public void moveAroundPlanet(float direction){
@@ -46,18 +48,31 @@ public class Player {
     }
 
     public void jump(){
-        if(grounded){
-            Vector2 jumpDirection = new Vector2(location).sub(currentPlanet.location).nor();
-            velocity.add(jumpDirection.scl(jumpStrength));
-            grounded = false;
+        if(jumpCount < 2){
+            if(!grounded && jumpCount == 1){
+                Vector2 jumpDirection = new Vector2(location).sub(currentPlanet.location).nor();
+                velocity.set(jumpDirection.scl(jumpStrength));
+                jumpCount = 2;
+                escaping = true;
+            }
+            else if(grounded){
+                Vector2 jumpDirection = new Vector2(location).sub(currentPlanet.location).nor();
+                velocity.add(jumpDirection.scl(jumpStrength));
+                jumpCount = 1;
+                grounded = false;
+            }
         }
     }
 
     public void update(){
-        location.add(currentPlanet.velocity);
-        applyGravity();
+        if(!escaping){
+            location.add(currentPlanet.velocity);
+            applyGravity();
+        }
         location.add(velocity);
-        checkPlanetCollision();
+        if(!escaping){
+            checkPlanetCollision();
+        }
     }
 
     public void draw(ShapeRenderer sr){
