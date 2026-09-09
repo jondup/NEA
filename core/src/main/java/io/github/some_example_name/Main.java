@@ -9,14 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import java.util.ArrayList;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
 
-    private Planets planet1;
-    private Planets planet2;
-    private Planets planet3;
-    private Planets planet4;
+    private ArrayList<Planets> planets;
+    float captureDistance = 350;
 
     private Player player;
 
@@ -27,15 +26,13 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         sr = new ShapeRenderer();
-        planet1 = new Planets(400, 500, -2, 0, 1, 0, 0);
-        planet2 = new Planets(1000, 500, -2, 0, 0, 1, 0);
-        planet3 = new Planets(1600, 500, -2, 0, 0, 0, 1);
-        planet4 = new Planets(2200,500, -2, 0, 0, 0.5f, 0.5f);
-
+        planets = new ArrayList<>();
+        planets.add(new Planets(400, 500, -2, 0, 1, 0, 0));
+        planets.add(new Planets(1000, 500, -2, 0, 0, 1, 0));
+        planets.add(new Planets(1600, 500, -2, 0, 0, 0, 1));
+        planets.add(new Planets(2200,500, -2, 0, 0, 0.5f, 0.5f));
         player = new Player(1000, 900);
-
-        player.currentPlanet = planet2;
-
+        player.currentPlanet = planets.get(1);
     }
 
     @Override
@@ -45,17 +42,17 @@ public class Main extends ApplicationAdapter {
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
-        planet1.update();
-        planet2.update();
-        planet3.update();
-        planet4.update();
-
-        planet1.draw(sr);
-        planet2.draw(sr);
-        planet3.draw(sr);
-        planet4.draw(sr);
+        for(Planets planet : planets){
+            planet.update();
+            planet.draw(sr);
+        }
 
         player.update();
+
+        if(player.escaping){
+            checkForNewPlanet();
+            player.angle = 0;
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
             player.moveAroundPlanet(-1);
@@ -69,18 +66,22 @@ public class Main extends ApplicationAdapter {
 
         player.draw(sr);
 
-        if(planet1.location.x + planet1.rad < 0){
-            planet1.location.x = Gdx.graphics.getWidth() + planet1.rad;
+        for(Planets planet : planets){
+            if(planet.location.x + planet.rad < 0){
+                planet.location.x = Gdx.graphics.getWidth() + planet.rad;
+            }
         }
-        if(planet2.location.x + planet2.rad < 0){
-            planet2.location.x = Gdx.graphics.getWidth() + planet2.rad;
-        }
-        if(planet3.location.x + planet3.rad < 0){
-            planet3.location.x = Gdx.graphics.getWidth() + planet3.rad;
-        }
-        if(planet4.location.x + planet4.rad < 0){
-            planet4.location.x = Gdx.graphics.getWidth() + planet4.rad;
-        }
+
         sr.end();
+    }
+
+    public void checkForNewPlanet(){
+        for(Planets planet : planets){
+            if(player.currentPlanet != planet && player.location.dst(planet.location) < captureDistance){
+                player.currentPlanet = planet;
+                player.escaping = false;
+                return;
+            }
+        }
     }
 }

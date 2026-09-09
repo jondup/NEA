@@ -7,13 +7,14 @@ public class Player {
     Vector2 location;
     Vector2 velocity;
     Planets currentPlanet;
-    float gravityStrength = 0.5f;
+    float gravityStrength = 0.1f;
     float playerRadius = 15;
-    float movementSpeed = 3f;
-    float jumpStrength = 10f;
+    float movementSpeed = 1f;
+    float jumpStrength = 1.5f;
     boolean grounded = false;
     int jumpCount = 0;
     boolean escaping = false;
+    float angle;
 
 
     public Player(int xpos, int ypos) {
@@ -64,10 +65,16 @@ public class Player {
         }
     }
 
+    public void updateOrientation(){
+        Vector2 playerToPlanet = new Vector2(location).sub(currentPlanet.location);
+        angle = playerToPlanet.angleDeg() -90;
+    }
+
     public void update(){
         if(!escaping){
             location.add(currentPlanet.velocity);
             applyGravity();
+            updateOrientation();
         }
         location.add(velocity);
         if(!escaping){
@@ -77,7 +84,7 @@ public class Player {
 
     public void draw(ShapeRenderer sr){
         sr.setColor(1,1,1,1);
-        sr.rect(location.x - 15, location.y - 15, 30, 30);
+        sr.rect(location.x - 10, location.y - 15, 10, 15,20,30,1,1, angle);
         sr.setColor(1,1,1,1);
     }
 }
