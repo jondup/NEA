@@ -1,15 +1,13 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
 import java.util.ArrayList;
+
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -18,6 +16,7 @@ public class Main extends ApplicationAdapter {
     float captureDistance = 350;
 
     private Player player;
+    ArrayList<Bullets> bullets;
 
     ShapeRenderer sr;
 
@@ -33,6 +32,8 @@ public class Main extends ApplicationAdapter {
         planets.add(new Planets(2200,500, -2, 0, 0, 0.5f, 0.5f));
         player = new Player(1000, 900);
         player.currentPlanet = planets.get(1);
+        bullets = new ArrayList<Bullets>();
+        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair);
     }
 
     @Override
@@ -48,6 +49,16 @@ public class Main extends ApplicationAdapter {
         }
 
         player.update();
+
+        for(Bullets bullet : bullets){
+            bullet.update();
+            bullet.bulletDirection();
+            bullet.draw(sr);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
+            bullets.add(new Bullets(player.location.x, player.location.y));
+        }
 
         if(player.escaping){
             checkForNewPlanet();

@@ -10,7 +10,7 @@ public class Player {
     float gravityStrength = 0.1f;
     float playerRadius = 15;
     float movementSpeed = 1f;
-    float jumpStrength = 1.5f;
+    float jumpStrength = 2f;
     boolean grounded = false;
     int jumpCount = 0;
     boolean escaping = false;
@@ -31,7 +31,7 @@ public class Player {
         float distance = location.dst(currentPlanet.location);
         float minimumDistance = currentPlanet.rad + playerRadius;
         if(distance < minimumDistance){
-            Vector2 directionFromPlanet = new Vector2(location).sub(currentPlanet.location).nor();
+            Vector2 directionFromPlanet = new Vector2 ((location).sub(currentPlanet.location).nor());
             location.set(currentPlanet.location.x + directionFromPlanet.x * minimumDistance, currentPlanet.location.y + directionFromPlanet.y * minimumDistance);
             velocity.set(0,0);
             grounded = true;
