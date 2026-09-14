@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,6 +15,9 @@ public class Main extends ApplicationAdapter {
 
     private ArrayList<Planets> planets;
     float captureDistance = 350;
+    float mouseX;
+    float mouseY;
+    Vector2 mouseLocation = new Vector2(mouseX, mouseY);
 
     private Player player;
     ArrayList<Bullets> bullets;
@@ -50,14 +54,17 @@ public class Main extends ApplicationAdapter {
 
         player.update();
 
+        mouseX = Gdx.input.getX();
+        mouseY = Gdx.input.getY();
+        mouseLocation.set(mouseX, Gdx.graphics.getHeight()-mouseY);
+
         for(Bullets bullet : bullets){
             bullet.update();
-            bullet.bulletDirection();
             bullet.draw(sr);
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            bullets.add(new Bullets(player.location.x, player.location.y));
+            bullets.add(new Bullets(player.location.x, player.location.y, mouseLocation.x, mouseLocation.y));
         }
 
         if(player.escaping){

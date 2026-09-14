@@ -9,8 +9,8 @@ public class Player {
     Planets currentPlanet;
     float gravityStrength = 0.1f;
     float playerRadius = 15;
-    float movementSpeed = 1f;
-    float jumpStrength = 2f;
+    float movementSpeed = 3f;
+    float jumpStrength = 5f;
     boolean grounded = false;
     int jumpCount = 0;
     boolean escaping = false;
