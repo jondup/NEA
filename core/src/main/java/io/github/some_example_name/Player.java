@@ -7,7 +7,7 @@ public class Player {
     Vector2 location;
     Vector2 velocity;
     Planets currentPlanet;
-    float gravityStrength = 0.1f;
+    float gravityStrength = 0.2f;
     float playerRadius = 15;
     float movementSpeed = 3f;
     float jumpStrength = 5f;

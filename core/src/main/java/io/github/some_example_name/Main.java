@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
 
-    private ArrayList<Planets> planets;
+    public ArrayList<Planets> planets;
     float captureDistance = 350;
     float mouseX;
     float mouseY;
@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
         planets.add(new Planets(2200,500, -2, 0, 0, 0.5f, 0.5f));
         player = new Player(1000, 900);
         player.currentPlanet = planets.get(1);
-        bullets = new ArrayList<Bullets>();
+        bullets = new ArrayList<>();
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair);
     }
 
@@ -63,8 +63,8 @@ public class Main extends ApplicationAdapter {
             bullet.draw(sr);
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            bullets.add(new Bullets(player.location.x, player.location.y, mouseLocation.x, mouseLocation.y));
+        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+            bullets.add(new Bullets(player.location.x, player.location.y, mouseLocation.x, mouseLocation.y, planets));
         }
 
         if(player.escaping){
