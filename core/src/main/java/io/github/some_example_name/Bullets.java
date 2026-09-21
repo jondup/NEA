@@ -10,13 +10,13 @@ public class Bullets {
     Vector2 velocity;
     Vector2 bulletLocation;
     float speed = 10f;
+    float angle;
 
     public Bullets(float xpos, float ypos, float mouseX, float mouseY, ArrayList<Planets> planets){
         this.bulletLocation = new Vector2(xpos,ypos);
         this.velocity = new Vector2(0,0);
         this.mouseTarget = new Vector2(mouseX, mouseY);
         bulletDirection();
-        checkCollision(planets);
     }
 
     public void bulletDirection(){
@@ -24,24 +24,31 @@ public class Bullets {
         velocity = bulletDirection.scl(speed);
     }
 
-    public boolean checkCollision(ArrayList<Planets> planets){
+    public void updateOrientation(){
+        Vector2 bulletDirection = new Vector2(mouseTarget).sub(bulletLocation);
+        angle = bulletDirection.angleDeg() -90;
+    }
+
+    /*public void checkCollision(ArrayList<Planets> planets, ArrayList<Bullets> bullets){
         for(Planets planet : planets){
-            float distance = planet.location.dst(bulletLocation);
-            float minimumDistance = planet.rad + 10;
-            if(distance < minimumDistance){
-                return true;
+            for(Bullets bullet : bullets){
+                float distance = planet.location.dst(bullet.bulletLocation);
+                float minimumDistance = planet.rad + 10;
+                if(distance < minimumDistance){
+                    bullets.iterator().remove(bullet);
+                }
             }
         }
-        return false;
-    }
+    }*/
 
     public void update(){
         bulletLocation.add(velocity);
+        updateOrientation();
     }
 
     public void draw (ShapeRenderer sr){
         sr.setColor(1,0,0,1);
-        sr.rect(bulletLocation.x-2.5f, bulletLocation.y-10, 5, 20);
+        sr.rect(bulletLocation.x-2.5f, bulletLocation.y-10, 2.5f, 10, 5, 20, 1, 1, angle);
         sr.setColor(1,1,1,1);
     }
 }

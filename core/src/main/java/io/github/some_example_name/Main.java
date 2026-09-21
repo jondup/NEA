@@ -21,6 +21,7 @@ public class Main extends ApplicationAdapter {
 
     private Player player;
     ArrayList<Bullets> bullets;
+    ArrayList<Coins> coins;
 
     ShapeRenderer sr;
 
@@ -37,6 +38,7 @@ public class Main extends ApplicationAdapter {
         player = new Player(1000, 900);
         player.currentPlanet = planets.get(1);
         bullets = new ArrayList<>();
+        coins = new ArrayList<>();
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair);
     }
 
@@ -61,6 +63,8 @@ public class Main extends ApplicationAdapter {
         for(Bullets bullet : bullets){
             bullet.update();
             bullet.draw(sr);
+
+            //bullet.checkCollision(planets, bullets);
         }
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -87,7 +91,15 @@ public class Main extends ApplicationAdapter {
         for(Planets planet : planets){
             if(planet.location.x + planet.rad < 0){
                 planet.location.x = Gdx.graphics.getWidth() + planet.rad;
+                for(int i=0; i< ((int)(Math.random() * 15)); i++){
+                    coins.add(new Coins(planet));
+                }
             }
+        }
+
+        for(Coins coin : coins){
+            coin.draw(sr);
+            coin.update();
         }
 
         sr.end();
