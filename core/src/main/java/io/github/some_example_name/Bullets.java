@@ -46,9 +46,10 @@ public class Bullets {
         updateOrientation();
     }
 
-    public void draw (ShapeRenderer sr){
+    public void drawBullets (ShapeRenderer sr){
         sr.setColor(1,0,0,1);
         sr.rect(bulletLocation.x-2.5f, bulletLocation.y-10, 2.5f, 10, 5, 20, 1, 1, angle);
         sr.setColor(1,1,1,1);
     }
+
 }
